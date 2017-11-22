@@ -2,8 +2,7 @@ defmodule LoggerFileBackend do
   @moduledoc"""
   """
 
-  @behaviour :gen_event
-
+  use GenEvent
 
   @type path      :: String.t
   @type file      :: :file.io_device
@@ -37,21 +36,8 @@ defmodule LoggerFileBackend do
       {:ok, state}
     end
   end
+
   def handle_event(:flush, state) do
-    # We're not buffering anything so this is a no-op
-    {:ok, state}
-  end
-  def handle_event(_, state) do
-    {:ok, state}
-  end
-
-
-  # def handle_info({:io_reply, pid, :ok}, status=%{format: {XX.Logger, :json}, inode: 19144011, io_device: pid, level: :debug, metadata: [except: [:pid, :file]], metadata_filter: nil, name: :json_log, path: "xx.log", rotate: nil}) do
-  def handle_info(state, _) do
-    {:ok, state}
-  end
-
-  def handle_info(:flush, state) do
     # We're not buffering anything so this is a no-op
     {:ok, state}
   end
