@@ -136,7 +136,20 @@ defmodule LoggerFileBackend do
   end
 
 
+  defp take_metadata(metadata, :all) do
+    metadata
+  end
+  defp take_metadata(metadata, [except: except_list]) do
+    metadatas = Enum.reduce(metadata, [], fn {key, val}, acc ->
+      if key in except_list do
+        acc
+      else
+        [{key, val} | acc]
+      end
+    end)
 
+    Enum.reverse(metadatas)
+  end
   defp take_metadata(metadata, keys) do
     metadatas = Enum.reduce(keys, [], fn key, acc ->
       case Keyword.fetch(metadata, key) do

@@ -87,6 +87,42 @@ defmodule LoggerFileBackendTest do
     assert log() =~ "user_id=13 auth=true hello"
   end
 
+  test "can configure metadata all" do
+    config format: "$metadata$message\n", metadata: :all
+
+    Logger.debug("hello")
+    assert log() =~ "hello"
+
+    Logger.metadata(auth: true)
+    Logger.metadata(user_id: 11)
+    Logger.metadata(user_id: 13)
+
+    Logger.debug("hello")
+    result = log()
+    assert String.contains?(result, "user_id=13")
+    assert String.contains?(result, "auth=true")
+  end
+
+  test "can configure metadata except" do
+    config format: "$metadata$message\n", metadata: [except: [:pid, :file, :except]]
+
+    Logger.debug("hello")
+    assert log() =~ "hello"
+
+    Logger.metadata(auth: true)
+    Logger.metadata(user_id: 11)
+    Logger.metadata(user_id: 13)
+    Logger.metadata(except: :this)
+
+    Logger.debug("hello")
+    result = log()
+    assert String.contains?(result, "user_id=13")
+    assert String.contains?(result, "auth=true")
+    assert not String.contains?(result, "pid=")
+    assert not String.contains?(result, "file=")
+    assert not String.contains?(result, "except=")
+  end
+
   test "can configure level" do
     config level: :info
 
