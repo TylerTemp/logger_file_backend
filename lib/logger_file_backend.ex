@@ -37,9 +37,11 @@ defmodule LoggerFileBackend do
       {:ok, state}
     end
   end
-
   def handle_event(:flush, state) do
     # We're not buffering anything so this is a no-op
+    {:ok, state}
+  end
+  def handle_event(_, state) do
     {:ok, state}
   end
 
