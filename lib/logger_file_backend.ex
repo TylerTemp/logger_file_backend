@@ -44,6 +44,17 @@ defmodule LoggerFileBackend do
   end
 
 
+  # def handle_info({:io_reply, pid, :ok}, status=%{format: {XX.Logger, :json}, inode: 19144011, io_device: pid, level: :debug, metadata: [except: [:pid, :file]], metadata_filter: nil, name: :json_log, path: "xx.log", rotate: nil}) do
+  def handle_info(state, :ok}, _) do
+    {:ok, state}
+  end
+
+  def handle_info(:flush, state) do
+    # We're not buffering anything so this is a no-op
+    {:ok, state}
+  end
+
+
   # helpers
 
   defp log_event(_level, _msg, _ts, _md, %{path: nil} = state) do
