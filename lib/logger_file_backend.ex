@@ -45,7 +45,7 @@ defmodule LoggerFileBackend do
 
 
   # def handle_info({:io_reply, pid, :ok}, status=%{format: {XX.Logger, :json}, inode: 19144011, io_device: pid, level: :debug, metadata: [except: [:pid, :file]], metadata_filter: nil, name: :json_log, path: "xx.log", rotate: nil}) do
-  def handle_info(state, :ok}, _) do
+  def handle_info(state, _) do
     {:ok, state}
   end
 
